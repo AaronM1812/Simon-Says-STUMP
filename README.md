@@ -82,9 +82,6 @@ This project was developed as part of **COMP22111 – Microprocessor Systems** a
 Exercise3/
 └── SimonSays.s # Main assembly source file
 
-yaml
-Copy code
-
 ---
 
 ## 📚 Context
