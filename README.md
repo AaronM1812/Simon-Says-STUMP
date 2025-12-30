@@ -80,7 +80,7 @@ flowchart TB
 
   style TOP fill:transparent,stroke:transparent
   style BOTTOM fill:transparent,stroke:transparent
-Stage Overview
+Stage Overview```
 The game loop is split into numbered stages, matching the comments in SimonSays.s.
 
 [0] RESET / INIT SYSTEM
