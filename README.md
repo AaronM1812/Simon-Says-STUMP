@@ -79,7 +79,7 @@ flowchart TB
   F6 --> S0
 
   style TOP fill:transparent,stroke:transparent
-  style BOTTOM fill:transparent,stroke:transparent
+  style BOTTOM fill:transparent,stroke:transparent'''
 
 The game loop is split into numbered stages, matching the comments in ⁠ pixel_puzzel.s ⁠.
 
