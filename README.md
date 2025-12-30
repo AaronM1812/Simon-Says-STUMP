@@ -80,3 +80,15 @@ flowchart TB
 
   style TOP fill:transparent,stroke:transparent
   style BOTTOM fill:transparent,stroke:transparent
+
+The game loop is split into numbered stages, matching the comments in ⁠ pixel_puzzel.s ⁠.
+
+### Stage Overview
+
+#### [0] RESET / INIT
+•⁠  ⁠Clears the LED matrix to black.
+•⁠  ⁠If ⁠ LEVEL_COUNTER > 1 ⁠, clears the user/level position tables before continuing.
+•⁠  ⁠Sets up initial variables and jumps into the appropriate init display:
+  - Level 1 → animated “PIXEL / PUZZLE” intro + “PRESS ANY KEY”.
+  - Level > 1 → simple LCD showing the current level number.
+
