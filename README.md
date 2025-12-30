@@ -1,10 +1,10 @@
-# Pixel Puzzle 🎮🧩
+# Simon Says 🎵🟥🟩🟨🟦
 
-Pixel Puzzle is a memory and pattern-copying game written entirely in low-level **STUMP** assembly, running on a custom STUMP processor and peripheral board.
+Simon Says is a memory game written entirely in low-level **STUMP** assembly, running on a custom STUMP processor and peripheral board.
 
-You’re briefly shown a random target pattern on the 8×8 LED matrix. Your job is to recreate that pattern by moving a cursor around the grid and toggling pixels on or off. As levels increase, more pixels are added to the pattern and the game becomes harder.
+You’re shown an ever-growing sequence of coloured quadrants on the LED matrix, each paired with a distinct audio tone. Your task is to reproduce the sequence using the keypad. As levels increase, the sequence length grows, testing memory, timing, and precision.
 
-> This repo contains my **COMP22111 Exercise 3** submission, which achieved a **96%** mark.
+> This repo contains my **COMP22111 Exercise 3** submission and demonstrates low-level embedded programming, memory-mapped I/O, and state-machine-driven game logic.
 
 ---
 
@@ -12,41 +12,35 @@ You’re briefly shown a random target pattern on the 8×8 LED matrix. Your job 
 
 **Gameplay demo (click to watch):**
 
-<a href="https://youtube.com/shorts/2wOikNK8kIo?feature=share">
-  <img src="assets/gameplay.gif" width="260" alt="Pixel Puzzle gameplay GIF">
+<a href="https://youtube.com/shorts/YOUR_VIDEO_LINK">
+  <img src="media/simon-says-demo.gif" width="260" alt="Simon Says gameplay GIF">
 </a>
 
 ---
 
 ## How the Game Works
 
-- At the start of each level, a **random target pattern** is displayed on the LED matrix.
-- The pattern is also stored in a **level memory table** in RAM.
-- You move a cursor over the 8×8 grid and **toggle pixels on/off** to build your guess.
-- Each selected pixel is tracked in a separate **user selection table**.
-- Pressing `#` (**submit**) compares both tables:
-  - ✅ Pixels you selected **and** that belong to the pattern stay **red**.
-  - ❌ Pixels you **missed** (not selected but part of the pattern) are shown in **green**.
-  - ❌ Pixels you selected that **weren’t** in the pattern flash **red/black**.
-- If the tables match exactly, you advance to the next level (with more pixels).
-- You can perform a **hard reset** at any time with **switch SW-D**, which:
-  - Resets the level counter to 1  
-  - Clears both memory tables and the matrix  
-  - Restores the intro screen
+- At the start of each round, the game **plays back a colour sequence** on the LED matrix.
+- Each colour is paired with a **unique buzzer tone**.
+- The sequence is stored internally and replayed deterministically.
+- The player must **reproduce the sequence exactly** using the keypad.
+- Input is checked **incrementally**:
+  - Correct inputs advance the sequence index.
+  - Any incorrect input immediately triggers a failure state.
+- Each successful round **adds one new colour** to the sequence.
+- The game supports **full reset and replay** after win or failure.
 
 ---
 
 ## Controls
 
-All movement & actions use the keypad:
+All interaction uses the keypad:
 
-- `2` – Move **up**
-- `8` – Move **down**
-- `4` – Move **left**
-- `6` – Move **right**
-- `5` – **Toggle/select** the current pixel
-- `#` – **Submit** your pattern (check for win / show fail feedback)
-- **SW-D** (on the switch bank) – **Hard reset** back to level 1
+- `1` – **Red** quadrant  
+- `3` – **Green** quadrant  
+- `9` – **Yellow** quadrant  
+- `7` – **Blue** quadrant  
+- **Any key** – Start / input  
 
 ---
 
@@ -54,19 +48,16 @@ All movement & actions use the keypad:
 
 This repository follows the structure provided for the exercise:
 
-- **`Exercise3/pixel_puzzel.s`**  
-  Main source file containing all core game logic and table definitions.
-
-- **`Exercise3/pixel_puzzle.kmd`**  
-  Board configuration file for the CAD toolchain.
+- **`Exercise3/SimonSays.s`**  
+  Main source file containing all game logic, state transitions, I/O handling, and animations.
 
 ---
 
 ## Main Game Logic
 
-The core loop follows the execution cycle documented in the `GAME LOGIC` comments in `pixel_puzzel.s`.
+The core loop follows the execution cycle documented in the `GAME LOGIC` comments in `SimonSays.s`.
 
-### Pixel Puzzle Execution Cycle
+### Simon Says Execution Cycle
 
 ```mermaid
 flowchart TB
@@ -74,13 +65,19 @@ flowchart TB
   %% --- TOP ROW (left -> right) ---
   subgraph TOP[" "]
     direction LR
-    S0["[0] RESET / INIT<br/>SYSTEM"] --> S1["[1] INIT<br/>DISPLAY"] --> S2["[2] DISPLAYING<br/>LEVEL"] --> S3["[3] ASSESSING<br/>USER INPUT"]
+    S0["[0] RESET / INIT<br/>SYSTEM"] --> 
+    S1["[1] INIT<br/>DISPLAY"] --> 
+    S2["[2] DISPLAYING<br/>SEQUENCE"] --> 
+    S3["[3] ASSESSING<br/>USER INPUT"]
   end
 
   %% --- BOTTOM ROW (right -> left) ---
   subgraph BOTTOM[" "]
     direction RL
-    S4["[4] DRAW<br/>PIXEL"] --> S5["[5] VERIFY"] --> S6["[6] CHECK<br/>FOR WIN"] --> F6["[6] OTHERWISE<br/>FAIL"]
+    S4["[4] INPUT<br/>FEEDBACK"] --> 
+    S5["[5] VERIFY"] --> 
+    S6["[6] CHECK<br/>FOR WIN"] --> 
+    F6["[6] OTHERWISE<br/>FAIL"]
   end
 
   %% --- Vertical drop + loopback ---
