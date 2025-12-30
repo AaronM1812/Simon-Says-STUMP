@@ -1,0 +1,6 @@
+.DS_Store
+*.qdb
+*.qtl
+*.qpg
+*_opt
+_vmake
