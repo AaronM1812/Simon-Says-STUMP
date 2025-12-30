@@ -4,7 +4,7 @@ Simon Says is a memory game implemented entirely in low-level **STUMP assembly**
 
 The game displays a sequence of coloured quadrants (red, green, yellow, blue) accompanied by audio tones. The player must reproduce the sequence using the keypad. Each level increases the sequence length, testing memory, timing, and precision.
 
-This project was developed as part of **COMP22111 – Microprocessor Systems** and demonstrates low-level embedded programming, memory-mapped I/O, and state-machine driven game logic.
+This project was developed as part of **COMP22111 – Microprocessor Systems** and demonstrates low-level embedded programming, memory-mapped I/O, and state-machine-driven game logic.
 
 ---
 
@@ -19,6 +19,7 @@ This project was developed as part of **COMP22111 – Microprocessor Systems** a
 ## 🧠 How the Game Works
 
 ### Game Flow
+
 1. **Attract Mode**
    - Cycles through coloured quadrants until a key is pressed.
    - Displays *“SIMON SAYS – PRESS ANY KEY TO START”* on the LCD.
@@ -38,8 +39,8 @@ This project was developed as part of **COMP22111 – Microprocessor Systems** a
    - Incorrect input triggers a game-over routine.
 
 5. **Win / Lose States**
-   - **Victory**: Green flashing lights, sound effects, and “YOU WIN!!” on the LCD.
-   - **Game Over**: Red flashing lights, vibration motor, sound, and “GAME OVER!!”.
+   - **Victory**: Green flashing lights, sound effects, and *“YOU WIN!!”* on the LCD.
+   - **Game Over**: Red flashing lights, vibration motor, sound, and *“GAME OVER!!”*.
 
 ---
 
@@ -88,7 +89,7 @@ Copy code
 
 ## 📚 Context
 
-This project builds on the same STUMP hardware and toolchain as my
+This project builds on the same STUMP hardware and toolchain as my  
 [Pixel Puzzle](https://github.com/malhitaran/Pixel-Puzzle) project, further demonstrating low-level embedded game development and system-level programming.
 
 ---
@@ -101,6 +102,11 @@ This project builds on the same STUMP hardware and toolchain as my
 - Improved timing accuracy
 
 ---
+
+## 🧑‍💻 Author
+
+**Aaron Malhi**  
+Embedded Systems & Software Engineering Student
 
 ## 🧑‍💻 Author
 
