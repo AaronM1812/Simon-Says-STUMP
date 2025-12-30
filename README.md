@@ -1,54 +1,61 @@
-Simon Says 🎵🟥🟩🟨🟦
+# Simon Says 🎵🟥🟩🟨🟦
 
-Simon Says is a memory game written entirely in low-level STUMP assembly, running on a custom STUMP processor and peripheral board.
+Simon Says is a memory game written entirely in low-level **STUMP** assembly, running on a custom STUMP processor and peripheral board.
 
 The game presents an ever-growing sequence of coloured quadrants (red, green, yellow, blue), each paired with a unique audio tone. The player must accurately reproduce the sequence using the keypad. With every successful round, the sequence length increases, placing greater demands on memory, timing, and precision.
 
-This repository contains my COMP22111 – Microprocessor Systems (Exercise 3) submission and demonstrates low-level embedded programming, memory-mapped I/O, and state-machine-driven game logic.
+> This repository contains my **COMP22111 – Microprocessor Systems (Exercise 3)** submission and demonstrates low-level embedded programming, memory-mapped I/O, and state-machine-driven game logic.
 
-Demo
+---
 
-Gameplay demo (click to watch):
+## Demo
 
-<a href="https://youtube.com/shorts/YOUR_VIDEO_LINK"> <img src="media/simon-says-demo.gif" width="260" alt="Simon Says gameplay GIF"> </a>
-How the Game Works
+**Gameplay demo (click to watch):**
 
-The game operates as a finite-state machine implemented directly in STUMP assembly.
+<a href="[https://youtube.com/shorts/YOUR_VIDEO_LINK](https://youtube.com/shorts/YOUR_VIDEO_LINK)">
+  <img src="media/simon-says-demo.gif" width="260" alt="Simon Says gameplay GIF">
+</a>
 
-Visual feedback is provided via the LED matrix and LCD.
+---
 
-User input is captured from the keypad with explicit debouncing.
+## How the Game Works
 
-Audio and haptic feedback reinforce correct and incorrect interactions.
+- The game operates as a **finite-state machine** implemented directly in STUMP assembly.
+- **Visual feedback** is provided via the LED matrix and LCD.
+- **User input** is captured from the keypad with explicit debouncing.
+- **Audio and haptic feedback** reinforce correct and incorrect interactions.
+- Game difficulty scales by increasing the sequence length each round.
 
-Game difficulty scales by increasing the sequence length each round.
+---
 
-Controls
+## Controls
 
 All interaction uses the keypad:
 
-1 – Red quadrant
+- `1` – Red quadrant
+- `3` – Green quadrant
+- `9` – Yellow quadrant
+- `7` – Blue quadrant
+- `Any key` – Start / input
 
-3 – Green quadrant
+---
 
-9 – Yellow quadrant
-
-7 – Blue quadrant
-
-Any key – Start / input
-
-Project Structure
+## Project Structure
 
 This repository follows the structure provided for the exercise:
 
-Exercise3/SimonSays.s
-Main STUMP assembly source file containing all game logic, state transitions, I/O handling, and animations.
+- **`Exercise3/SimonSays.s`**
+  Main STUMP assembly source file containing all game logic, state transitions, I/O handling, and animations.
 
-Main Game Logic
+---
 
-The core loop follows a numbered execution cycle documented in the internal comments and labels in SimonSays.s.
+## Main Game Logic
 
-Simon Says Execution Cycle
+The core loop follows a numbered execution cycle documented in the internal comments and labels in `SimonSays.s`.
+
+### Simon Says Execution Cycle
+
+```mermaid
 flowchart TB
 
   %% --- TOP ROW ---
@@ -73,13 +80,10 @@ flowchart TB
 
   style TOP fill:transparent,stroke:transparent
   style BOTTOM fill:transparent,stroke:transparent
-
 Stage Overview
-
 The game loop is split into numbered stages, matching the comments in SimonSays.s.
 
 [0] RESET / INIT SYSTEM
-
 Clears the LED matrix and resets all peripheral states.
 
 Resets core game variables:
@@ -93,7 +97,6 @@ Input tracking buffers
 Jumps into attract mode.
 
 [1] INIT DISPLAY
-
 Displays “SIMON SAYS – PRESS ANY KEY TO START” on the LCD.
 
 Cycles through coloured quadrants as an attract animation.
@@ -101,7 +104,6 @@ Cycles through coloured quadrants as an attract animation.
 Waits for a clean key press and release before starting.
 
 [2] DISPLAYING SEQUENCE
-
 Plays back the current colour sequence:
 
 Each colour lights a quadrant on the LED matrix.
@@ -113,7 +115,6 @@ The sequence is stored in memory and replayed deterministically.
 After playback completes, control moves to user input.
 
 [3] ASSESSING USER INPUT
-
 Polls the keypad with explicit debouncing logic.
 
 Decodes key presses into colour selections.
@@ -127,7 +128,6 @@ Plays the associated tone.
 Input is compared incrementally against the stored sequence.
 
 [4] INPUT FEEDBACK
-
 Provides immediate visual and audio feedback for each input.
 
 Correct inputs advance the input index.
@@ -135,7 +135,6 @@ Correct inputs advance the input index.
 Incorrect inputs branch immediately to failure handling.
 
 [5] VERIFY
-
 Checks whether the full sequence has been entered correctly.
 
 If complete and correct:
@@ -147,8 +146,7 @@ Extends the sequence.
 Returns to DISPLAYING SEQUENCE.
 
 [6] CHECK FOR WIN / FAIL
-
-Win condition
+Win condition:
 
 Final level reached.
 
@@ -158,7 +156,7 @@ Victory sound.
 
 LCD displays “YOU WIN!!”.
 
-Fail condition
+Fail condition:
 
 Incorrect input detected.
 
@@ -171,20 +169,11 @@ LCD displays “GAME OVER!!”.
 Game returns to attract mode after reset.
 
 Implementation Highlights
-
 Pure STUMP assembly — no high-level language abstractions.
 
 Extensive use of memory-mapped I/O:
 
-LED matrix
-
-LCD display
-
-Keypad
-
-Buzzer
-
-Vibration motor
+LED matrix, LCD display, Keypad, Buzzer, Vibration motor.
 
 Structured state-machine control flow.
 
@@ -196,24 +185,11 @@ Tone generation
 
 Delay timing
 
-Modular subroutines for:
+Modular subroutines for input polling, sequence playback, and animations.
 
-Input polling and debouncing
-
-Sequence playback
-
-Win / fail animations
-
-Clear separation between:
-
-Game state
-
-User input handling
-
-Output rendering
+Clear separation between game state, user input handling, and output rendering.
 
 Future Improvements
-
 Randomised sequence generation using a hardware counter.
 
 Difficulty scaling via timing reduction.
@@ -225,5 +201,4 @@ Enhanced audio patterns.
 Multi-round endurance mode.
 
 Author
-
 Aaron Malhi
