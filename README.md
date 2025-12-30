@@ -20,11 +20,11 @@ This repository contains my *COMP22111 – Microprocessor Systems (Exercise 3)* 
 
 ## How the Game Works
 
-•⁠  ⁠The game operates as a *finite-state machine* implemented directly in STUMP assembly.  
-•⁠  ⁠Visual feedback is provided via the LED matrix and LCD.  
-•⁠  ⁠User input is captured from the keypad with explicit *debouncing*.  
-•⁠  ⁠Audio and haptic feedback reinforce correct and incorrect interactions.  
-•⁠  ⁠Game difficulty scales by increasing the sequence length each round.
+- The game operates as a **finite-state machine** implemented directly in STUMP assembly.
+- Visual feedback is provided via the LED matrix and LCD.
+- User input is captured from the keypad with explicit **debouncing**.
+- Audio and haptic feedback reinforce correct and incorrect interactions.
+- Game difficulty scales by increasing the sequence length each round.
 
 ---
 
@@ -32,11 +32,11 @@ This repository contains my *COMP22111 – Microprocessor Systems (Exercise 3)* 
 
 All interaction uses the keypad:
 
-•⁠  ⁠⁠ 1 ⁠ – Red quadrant  
-•⁠  ⁠⁠ 3 ⁠ – Green quadrant  
-•⁠  ⁠⁠ 9 ⁠ – Yellow quadrant  
-•⁠  ⁠⁠ 7 ⁠ – Blue quadrant  
-•⁠  ⁠Any key – Start / input  
+- **1** – Red quadrant  
+- **3** – Green quadrant  
+- **9** – Yellow quadrant  
+- **7** – Blue quadrant  
+- **Any key** – Start / input  
 
 ---
 
@@ -44,7 +44,7 @@ All interaction uses the keypad:
 
 This repository follows the structure provided for the exercise:
 
-•⁠  ⁠*⁠ Exercise3/SimonSays.s ⁠*  
+- **Exercise3/SimonSays.s**  
   Main STUMP assembly source file containing all game logic, state transitions, I/O handling, and animations.
 
 ---
@@ -80,100 +80,145 @@ flowchart TB
 
   style TOP fill:transparent,stroke:transparent
   style BOTTOM fill:transparent,stroke:transparent
-The game loop is split into numbered stages, matching the comments in `SimonSays.s`.
+The game loop is split into numbered stages, matching the comments in SimonSays.s.
 
-## Stage Overview
+Stage Overview
+[0] RESET / INIT SYSTEM
+Clears the LED matrix and resets all peripheral states.
 
-### [0] RESET / INIT SYSTEM
-* Clears the LED matrix and resets all peripheral states.
-* Resets game variables:
-    * Level counter
-    * Sequence index
-    * Input tracking buffers
-* Jumps into attract mode.
+Resets game variables:
 
-### [1] INIT DISPLAY
-* Displays “SIMON SAYS – PRESS ANY KEY TO START” on the LCD.
-* Cycles through coloured quadrants as an attract animation.
-* Waits for a clean key press and release before starting.
+Level counter
 
-### [2] DISPLAYING SEQUENCE
-* Plays back the current colour sequence:
-    * Each colour lights a quadrant on the LED matrix.
-    * A matching tone is played via the buzzer.
-* The sequence is stored in memory and replayed deterministically.
-* After playback completes, control moves to user input.
+Sequence index
 
-### [3] ASSESSING USER INPUT
-* Polls the keypad with explicit debouncing logic.
-* Decodes key presses into colour selections.
-* Each press:
-    * Lights the corresponding quadrant.
-    * Plays the associated tone.
-* Input is compared incrementally against the stored sequence.
+Input tracking buffers
 
-### [4] INPUT FEEDBACK
-* Provides immediate visual and audio feedback for each input.
-* Correct inputs advance the input index.
-* Incorrect inputs branch immediately to failure handling.
+Jumps into attract mode.
 
-### [5] VERIFY
-* Checks whether the full sequence has been entered correctly.
-* If complete and correct:
-    * Advances the level counter.
-    * Extends the sequence.
-    * Returns to **DISPLAYING SEQUENCE**.
+[1] INIT DISPLAY
+Displays “SIMON SAYS – PRESS ANY KEY TO START” on the LCD.
 
-### [6] CHECK FOR WIN / FAIL
-* **Win condition**
-    * Final level reached.
-    * Green flashing animation.
-    * Victory sound.
-    * LCD displays “YOU WIN!!”.
-* **Fail condition**
-    * Incorrect input detected.
-    * Red flashing animation.
-    * Buzzer + vibration motor feedback.
-    * LCD displays “GAME OVER!!”.
-* Game returns to attract mode after reset.
+Cycles through coloured quadrants as an attract animation.
 
----
+Waits for a clean key press and release before starting.
 
-## Implementation Highlights
+[2] DISPLAYING SEQUENCE
+Plays back the current colour sequence:
 
-* **Pure STUMP assembly** — no high-level language abstractions.
-* **Extensive use of memory-mapped I/O:**
-    * LED matrix
-    * LCD display
-    * Keypad
-    * Buzzer
-    * Vibration motor
-* **Structured state-machine control flow.**
-* **Table-driven routines for:**
-    * Colour → output mapping
-    * Tone generation
-    * Delay timing
-* **Modular subroutines for:**
-    * Input polling and debouncing
-    * Sequence playback
-    * Win / fail animations
-* **Clear separation between:**
-    * Game state
-    * User input handling
-    * Output rendering
+Each colour lights a quadrant on the LED matrix.
 
----
+A matching tone is played via the buzzer.
 
-## Future Improvements
+The sequence is stored in memory and replayed deterministically.
 
-- [ ] Randomised sequence generation using a hardware counter.
-- [ ] Difficulty scaling via timing reduction.
-- [ ] Score or highest-level persistence.
-- [ ] Enhanced audio patterns.
-- [ ] Multi-round endurance mode.
+After playback completes, control moves to user input.
 
----
+[3] ASSESSING USER INPUT
+Polls the keypad with explicit debouncing logic.
 
-## Author
+Decodes key presses into colour selections.
 
-**Aaron Malhi**
+Each press:
+
+Lights the corresponding quadrant
+
+Plays the associated tone
+
+Input is compared incrementally against the stored sequence.
+
+[4] INPUT FEEDBACK
+Provides immediate visual and audio feedback for each input.
+
+Correct inputs advance the input index.
+
+Incorrect inputs branch immediately to failure handling.
+
+[5] VERIFY
+Checks whether the full sequence has been entered correctly.
+
+If complete and correct:
+
+Advances the level counter
+
+Extends the sequence
+
+Returns to DISPLAYING SEQUENCE
+
+[6] CHECK FOR WIN / FAIL
+Win condition
+
+Final level reached
+
+Green flashing animation
+
+Victory sound
+
+LCD displays “YOU WIN!!”
+
+Fail condition
+
+Incorrect input detected
+
+Red flashing animation
+
+Buzzer + vibration motor feedback
+
+LCD displays “GAME OVER!!”
+
+Game returns to attract mode after reset
+
+Implementation Highlights
+Pure STUMP assembly — no high-level language abstractions
+
+Extensive use of memory-mapped I/O:
+
+LED matrix
+
+LCD display
+
+Keypad
+
+Buzzer
+
+Vibration motor
+
+Structured state-machine control flow
+
+Table-driven routines for:
+
+Colour → output mapping
+
+Tone generation
+
+Delay timing
+
+Modular subroutines for:
+
+Input polling and debouncing
+
+Sequence playback
+
+Win / fail animations
+
+Clear separation between:
+
+Game state
+
+User input handling
+
+Output rendering
+
+Future Improvements
+Randomised sequence generation using a hardware counter
+
+Difficulty scaling via timing reduction
+
+Score or highest-level persistence
+
+Enhanced audio patterns
+
+Multi-round endurance mode
+
+Author
+Aaron Malhi
