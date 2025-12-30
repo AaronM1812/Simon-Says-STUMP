@@ -107,8 +107,3 @@ This project builds on the same STUMP hardware and toolchain as my
 
 **Aaron Malhi**  
 Embedded Systems & Software Engineering Student
-
-## 🧑‍💻 Author
-
-**Aaron Malhi**  
-Embedded Systems & Software Engineering Student  
