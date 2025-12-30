@@ -12,9 +12,12 @@ The game presents an ever-growing sequence of coloured quadrants (red, green, ye
 
 **Gameplay demo (click to watch):**
 
-<a href="[https://youtube.com/shorts/xkRDJ8w8uPc?feature=share](https://youtube.com/shorts/xkRDJ8w8uPc?feature=share)">
-  <img src="media/simon-says-demo.gif" width="260" alt="Simon Says gameplay GIF">
+<a href="https://youtube.com/shorts/xkRDJ8w8uPc?feature=share">
+  <img src="media/simon-demo.gif" width="260" alt="Simon Says gameplay GIF">
 </a>
+
+Or view directly on YouTube Shorts:  
+[Watch the gameplay demo](https://youtube.com/shorts/xkRDJ8w8uPc?feature=share)
 
 ---
 
